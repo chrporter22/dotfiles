@@ -27,16 +27,77 @@ return {
 
       local lspconfig = require("lspconfig")
 
-      lspconfig.tailwindcss.setup({
-        capabilities = capabilities
-      })
-      lspconfig.ruby_lsp.setup({
-        capabilities = capabilities,
-        cmd = { "/home/typecraft/.asdf/shims/ruby-lsp" }
-      })
       lspconfig.lua_ls.setup({
         capabilities = capabilities
       })
+
+      lspconfig.pyright.setup({
+        capabilities = capabilities,
+        cmd = { "pyright-langserver", "--stdio" },
+        filetypes = { "python"},
+        settings = {
+            python = {
+                analysis = {
+                    autoSearchPaths = true,
+                    diagnosticMode = "openFilesOnly",
+                    useLibraryCodeForTypes = true
+                }
+            }
+        }
+      })
+    
+      lspconfig.rust_analyzer.setup({
+				on_attach = on_attach,
+				capabilities = capabilities,
+				filetypes = { "rust" },
+				settings = {
+                    ['rust-analyzer'] = {
+                        diagnostics = {
+                            enable = false;
+						},
+					},
+				},
+			})
+
+       lspconfig.bashls.setup({
+            capabilities = capabilities,
+            cmd = { "bash-language-server", "start" },
+            filetypes = { "bash", "sh" },
+            settings = {
+                bashIde = {
+                    globPattern = "*@(.sh|.inc|.bash|.command)"
+                },
+            },
+       })
+
+       lspconfig.r_language_server.setup({
+             cmd = { "R", "--no-echo", "-e", "languageserver::run()" },
+             filetypes = { "r", "rmd", "quarto" },
+             log_level = 2
+       })
+      lspconfig.textlsp.setup({
+            cmd = { "textlsp" },
+            filetypes = { "text", "tex", "org" },
+            settings = {
+                textLSP = {
+                    analysers = {
+                        languagetool = {
+                            check_text = {
+                                on_change = false,
+                                on_open = true,
+                                on_save = true
+                            },
+                            enabled = true
+                        }
+                    },
+                    documents = {
+                        org = {
+                            org_todo_keywords = { "TODO", "IN_PROGRESS", "DONE" }
+                        }
+                    }
+                }
+            }
+       })
 
       vim.keymap.set("n", "K", vim.lsp.buf.hover, {})
       vim.keymap.set("n", "<leader>gd", vim.lsp.buf.definition, {})

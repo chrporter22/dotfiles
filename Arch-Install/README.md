@@ -48,11 +48,14 @@ sudo pacman -S cmatrix
 ```
 
 * i3-wm
+```
 sudo pacman -S i3-wm i3lock i3status dmenu
 sudo pacman -S rofi picom
 sudo pacman -S xorg-xrandr xorg-xinit
 sudo pacman -S xorg-server
 sudo pacman -S xf86-input-libinput  # Touchpad Support
+sudo pacman -S i3-gaps
+````
 
 * GNU Stow
 ```

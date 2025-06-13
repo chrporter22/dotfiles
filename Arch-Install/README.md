@@ -37,12 +37,14 @@ sudo pacman -S git
 # System Tools
 * fastfetch
 ```
-
+sudo pacman -S htop
 ```
+
 * htop
 ```
-
+sudo pacman -S htop
 ```
+
 * Alactritty
 ```
 sudo pacman -S alacritty
@@ -55,7 +57,6 @@ sudo pacman -S cmatrix
 * i3-wm
 ```
 sudo pacman -S i3-wm i3lock i3status dmenu
-sudo pacman -S rofi picom
 sudo pacman -S xorg-xrandr xorg-xinit
 sudo pacman -S xorg-server
 sudo pacman -S xf86-input-libinput  # Touchpad Support
@@ -98,16 +99,10 @@ sudo pacman -S feh
 ```
 
 * Zathura 
-A lightweight customizable pdf viewer with Vim-like keybindings.
+    + A lightweight customizable pdf viewer with Vim-like keybindings.
 ```
 sudo pacman -S zathura zathura-pdf-poppler
 ```
-
-* Docker
-Containers for deployment and tooling management for project enviroments
-```
-
-````
 
 # Data Science Tools
 * Pyhton3
@@ -123,6 +118,10 @@ sudo pacman -S github-cli
 * Juypter Lab
 * Quarto CLI
 * Docker
+    + Containers for deployment and tooling management for project environment 
+```
+
+```
 * Python-pip
 * venv
 * uv

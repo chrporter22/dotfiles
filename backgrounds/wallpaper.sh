@@ -1,2 +1,2 @@
 #!/bin/sh
-feh --bg-scale /home/cporter/.config/backgrounds/wallpaper.jpg
+feh --bg-scale /home/cporter/.config/backgrounds/nice-blue-background.png

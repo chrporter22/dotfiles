@@ -16,7 +16,7 @@ sudo pacman -S alsa-utils  # run the command alsamixer
 sudo pacman -S pulseaudio pulseaudio-alsa
 ```
 
-* bluez
+* bluez bluez-utils
 ```
 
 ```
@@ -28,6 +28,11 @@ sudo pacman -S pulseaudio pulseaudio-alsa
 ```
 
 ```
+* git
+```
+sudo pacman -S git
+```
+
 
 # System Tools
 * fastfetch
@@ -91,6 +96,19 @@ sudo pacman -S fzf
 ```
 sudo pacman -S feh
 ```
+
+* Zathura 
+A lightweight customizable pdf viewer with Vim-like keybindings.
+```
+sudo pacman -S zathura zathura-pdf-poppler
+```
+
+* Docker
+Containers for deployment and tooling management for project enviroments
+```
+
+````
+
 # Data Science Tools
 * Pyhton3
 * github cli
@@ -100,3 +118,12 @@ sudo pacman -S github-cli
 * vim
 * nvim
 * tmux
+* R 
+* R Studio
+* Juypter Lab
+* Quarto CLI
+* Docker
+* Python-pip
+* venv
+* uv
+

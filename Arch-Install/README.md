@@ -102,11 +102,9 @@ sudo pacman -S feh
 
 * Zathura 
     + A lightweight customizable pdf viewer with Vim-like keybindings.
-```
-sudo pacman -S zathura zathura-pdf-poppler
-```
     + A Pywal color scheme for Zathura
 ```
+sudo pacman -S zathura zathura-pdf-poppler
 git clone https://github.com/GideonWolfe/Zathura-Pywal
 ```
 

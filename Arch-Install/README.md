@@ -33,8 +33,9 @@ sudo pacman -S pulseaudio pulseaudio-alsa
 sudo pacman -S git
 ```
 
-
 # System Tools
++ i3, Rofi, Polybar Theme:  inpsired by [https://guthub.com/Typecraft-dev/dotfiles]
++ Zathura Theme: [https://github.com/GideonWolfe/Zathura-Pywal]
 * fastfetch
 ```
 sudo pacman -S htop
@@ -53,6 +54,7 @@ fc-list | grep "JetBrainsMono"
 sudo pacman -S lsd
 sudo pacman -S cmatrix
 ```
+
 
 * i3-wm
 ```
@@ -103,26 +105,29 @@ sudo pacman -S feh
 ```
 sudo pacman -S zathura zathura-pdf-poppler
 ```
+    + A Pywal color scheme for Zathura
+```
+git clone https://github.com/GideonWolfe/Zathura-Pywal
+```
 
 # Data Science Tools
 * Pyhton3
-* github cli
+* R 
+* Github CLI
 ```
 sudo pacman -S github-cli
 ```
-* vim
-* nvim
-* tmux
-* R 
-* R Studio
+* Vim
+* Neovim
+* Tmux
 * Juypter Lab
 * Quarto CLI
 * Docker
     + Containers for deployment and tooling management for project environment 
 ```
-
 ```
-* Python-pip
-* venv
 * uv
+    + Lighweight rust based python package & tool manager
+```
+
 

@@ -8,7 +8,7 @@
 * Enable Systemctl
 ```
 ```
-## Post - Install
+## Post - Install System Tools
 * pulseaudio
 ```
 sudo pacman -S pulseaudio pulseaudio-equalizer pulseaudio-jack
@@ -43,7 +43,6 @@ rm -rf ~/yay
 yay --version
 ```
 
-### System Tools
 + Window Management & Launcher:
     + Theme: inpsired by [Typecraft-dev](https://guthub.com/Typecraft-dev/dotfiles)
         + i3
@@ -99,7 +98,12 @@ yay --version
     sudo pacman -S feh
     ```
 
-#### Data Science & Developer Tools
+### Data Science & Developer Tools
+* [GNU Stow](https://github.com/aspiers/stow)
+    + Manage data science tools and configurations with version control and CI/CD methods
+    ```
+    pacman -S stow
+    ```
 * Pyhton3
 * R 
 * Github CLI
@@ -131,6 +135,7 @@ sudo pacman -S fzf
 ```
 
 * GNU Stow
+    + Manage data science tools and configurations with version control and CI/CD methods
 ```
 pacman -S stow
 ```

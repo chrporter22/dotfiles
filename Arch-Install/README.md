@@ -138,9 +138,3 @@ sudo pacman -S ripgrep
 ```
 sudo pacman -S fzf
 ```
-
-* GNU Stow
-    + Manage data science tools and configurations with version control and CI/CD methods
-```
-pacman -S stow
-```

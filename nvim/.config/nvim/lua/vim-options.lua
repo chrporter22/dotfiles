@@ -28,5 +28,7 @@ vim.opt.expandtab = true
 vim.opt.smartindent = true
 vim.opt.textwidth = 89
 vim.opt.foldlevel = 99
+vim.opt.encoding = "utf-8"
+vim.opt.fileencodings = { "utf-8" }
 
 vim.cmd("set guicursor=n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50")

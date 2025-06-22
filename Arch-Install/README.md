@@ -8,7 +8,7 @@
 * Enable Systemctl
 ```
 ```
-# Post - Install
+## Post - Install
 * pulseaudio
 ```
 sudo pacman -S pulseaudio pulseaudio-equalizer pulseaudio-jack
@@ -33,82 +33,73 @@ sudo pacman -S pulseaudio pulseaudio-alsa
 sudo pacman -S git
 ```
 
-# System Tools
-+ i3, Rofi, Polybar Theme:  inpsired by [https://guthub.com/Typecraft-dev/dotfiles]
-+ Zathura Theme: [https://github.com/GideonWolfe/Zathura-Pywal]
-* fastfetch
+* yay
 ```
-sudo pacman -S htop
-```
-
-* htop
-```
-sudo pacman -S htop
+git clone https://aur.archlinux.org/yay.git
+cd yay
+makepkg -si
+# Clean up after install
+rm -rf ~/yay
+yay --version
 ```
 
-* Alactritty
-```
-sudo pacman -S alacritty
-sudo pacman -S ttf-jetbrains-mono-nerd
-fc-list | grep "JetBrainsMono"
-sudo pacman -S lsd
-sudo pacman -S cmatrix
-```
+### System Tools
++ Window Management & Launcher:
+    + Theme: inpsired by [Typecraft-dev](https://guthub.com/Typecraft-dev/dotfiles)
+        + i3
+        ```
+        sudo pacman -S i3-wm i3lock i3status dmenu
+        sudo pacman -S xorg-xrandr xorg-xinit
+        sudo pacman -S xorg-server
+        sudo pacman -S xf86-input-libinput  # Touchpad Support
+        sudo pacman -S i3-gaps
+        ```
+        + Rofi
+        ```
+        sudo pacman -S rofi 
+        ```
+        + Polybar
+        ```
+        sudo pacman -S picom 
+        ```
 
++ PDF Viewer: Zathura
+    + Theme: Pywal [Zathura-Pywal](https://github.com/GideonWolfe/Zathura-Pywal)
+    + [VimTex](https://github.com/lervag/vimtex) plugin compatible
+    ```
+    sudo pacman -S zathura zathura-pdf-poppler
+    git clone https://github.com/GideonWolfe/Zathura-Pywal
+    ```
 
-* i3-wm
-```
-sudo pacman -S i3-wm i3lock i3status dmenu
-sudo pacman -S xorg-xrandr xorg-xinit
-sudo pacman -S xorg-server
-sudo pacman -S xf86-input-libinput  # Touchpad Support
-sudo pacman -S i3-gaps
-````
+* Fetch:
+    + [fastfetch](https://github.com/fastfetch-cli/fastfetch)
+        ```
+        sudo pacman -S fastfetch
+        ```
 
-* GNU Stow
-```
-pacman -S stow
-```
+* Process Viewer 
+    + [htop](https://github.com/htop-dev/htop)
+    ```
+    sudo pacman -S htop
+    ```
 
-* Rofi
-```
-sudo pacman -S rofi 
-```
+* Terminal Emulator
+    + [Alactritty](https://github.com/alacritty/alacritty)
+    + [Theme](https://github.com/catppuccin/catppuccin)
+    ```
+    sudo pacman -S alacritty
+    sudo pacman -S ttf-jetbrains-mono-nerd
+    fc-list | grep "JetBrainsMono"
+    sudo pacman -S lsd
+    ```
 
-* Picom
-```
-sudo pacman -S picom 
-```
+* Image Viewer
+    + [feh](https://github.com/derf/feh)
+    ```
+    sudo pacman -S feh
+    ```
 
-* Polybar
-```
-sudo pacman -S polybar
-```
-
-* Ripgep
-```
-sudo pacman -S ripgrep
-```
-
-* fzf
-```
-sudo pacman -S fzf
-```
-
-* feh
-```
-sudo pacman -S feh
-```
-
-* Zathura 
-    + A lightweight customizable pdf viewer with Vim-like keybindings.
-    + A Pywal color scheme for Zathura
-```
-sudo pacman -S zathura zathura-pdf-poppler
-git clone https://github.com/GideonWolfe/Zathura-Pywal
-```
-
-# Data Science Tools
+#### Data Science & Developer Tools
 * Pyhton3
 * R 
 * Github CLI
@@ -118,14 +109,28 @@ sudo pacman -S github-cli
 * Vim
 * Neovim
 * Tmux
-* Juypter Lab
 * Quarto CLI
 * Docker
-    + Containers for deployment and tooling management for project environment 
 ```
 ```
 * uv
-    + Lighweight rust based python package & tool manager
+    + Lightweight rust based python package & tool manager
+        ```
+        cargo install --git https://github.com/astral-sh/uv uv
+        export PATH="$HOME/.cargo/bin:$PATH"
+        ```
+
+* ripgep
+```
+sudo pacman -S ripgrep
 ```
 
+* fzf
+```
+sudo pacman -S fzf
+```
 
+* GNU Stow
+```
+pacman -S stow
+```

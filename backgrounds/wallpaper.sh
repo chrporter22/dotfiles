@@ -3,3 +3,5 @@
 
 # feh --bg-scale /home/cporter/.config/backgrounds/dracula-arch.jpg
 feh --bg-scale /home/cporter/.config/backgrounds/nice-blue-background.png
+
+# feh --bg-scale /home/cporter/.config/backgrounds/wallpaper.jpg

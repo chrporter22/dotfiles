@@ -11,3 +11,6 @@ PS1='[\u@\h \W]\$ '
 
 # # Add Zathura-Pywal to path
 # export PATH="$BINPATH:\$PATH"
+
+# Add uv and rust apps to PATH
+export PATH="$HOME/.cargo/bin:$PATH"

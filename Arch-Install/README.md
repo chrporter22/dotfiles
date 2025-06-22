@@ -72,6 +72,7 @@ yay --version
         + [latexmk](https://github.com/gingerhot/latexmk)
         ```
         sudo pacman -S texlive-binextra
+        sudo pacman -S texlive-core texlive-bin texlive-latex texlive-latexextra texlive-formatsextra
         ```
 
 * Fetch:

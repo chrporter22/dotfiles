@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Arch Linux i3 Data Science Install (Nvim Tmux, Zathura; Catppuccin / Rose-pine colorscheme)
-# Language support: Pyhton, R, bash, marckdown, sql, c, c_sharp, rust, lua, latex, html,
+# Arch Linux Data Science Install (Nvim Tmux, Zathura; Catppuccin / Rose-pine colorscheme)
+# Neovim language support: Pyhton, R, bash, marckdown, sql, c, c_sharp, rust, lua, latex, html,
 # Source: https://www.github.com/chrporter22/dotfiles
 # Author: Christian J. Porter
 

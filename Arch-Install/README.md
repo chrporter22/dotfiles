@@ -64,11 +64,15 @@ yay --version
 
 + PDF Viewer: Zathura
     + Theme: Pywal [Zathura-Pywal](https://github.com/GideonWolfe/Zathura-Pywal)
-    + [VimTex](https://github.com/lervag/vimtex) plugin compatible
     ```
     sudo pacman -S zathura zathura-pdf-poppler
     git clone https://github.com/GideonWolfe/Zathura-Pywal
     ```
+    + [VimTex](https://github.com/lervag/vimtex) plugin compatible
+        + [latexmk](https://github.com/gingerhot/latexmk)
+        ```
+        sudo pacman -S latexmk
+        ```
 
 * Fetch:
     + [fastfetch](https://github.com/fastfetch-cli/fastfetch)

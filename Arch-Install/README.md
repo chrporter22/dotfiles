@@ -71,7 +71,7 @@ yay --version
     + [VimTex](https://github.com/lervag/vimtex) plugin compatible
         + [latexmk](https://github.com/gingerhot/latexmk)
         ```
-        sudo pacman -S latexmk
+        sudo pacman -S texlive-binextra
         ```
 
 * Fetch:

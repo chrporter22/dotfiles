@@ -82,11 +82,17 @@ start_installation() {
 
 install_uv() {
     if ! is_installed uv; then
-        cargo install --git https://github.com/astral-sh/uv uv
+        echo "→ Checking for Rust toolchain (cargo)..."
+        install_package rust
+
+        echo "→ Installing uv via cargo..."
+        cargo install --git https://github.com/astral-sh/uv uv 2>>"$ERROR_LOG"
+
         export PATH="$HOME/.cargo/bin:$PATH"
         echo 'export PATH="$HOME/.cargo/bin:$PATH"' >> ~/.bashrc
     else
-        echo "uv already installed, skipping."
+        echo "✔ uv already installed, skipping."
+        echo "uv" >> "$SKIPPED_LOG"
     fi
 }
 

@@ -16,12 +16,13 @@ install_package() {
     done
 }
 
+# Call main function to run entire setup script
 main() {
     install_yay
     start_installation
     install_uv
-    install_dotfiles
-    install_plugins
+    install_dotfiles      # dotfiles first
+    install_plugins       # then plugin installation
     prompt_reboot
 }
 

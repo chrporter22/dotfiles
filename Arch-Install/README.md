@@ -115,6 +115,9 @@ yay --version
     ```
 * Pyhton3
 * R 
+    ```
+    sudo pacman -S r
+    ```
 * Github CLI
 ```
 sudo pacman -S github-cli
@@ -123,9 +126,22 @@ sudo pacman -S github-cli
 * Neovim
 * Tmux
 * Quarto CLI
+    ```
+    git clone https://github.com/quarto-dev/quarto-cli
+    ```
+    + run setup script
+        ```
+        cd quarto-cli
+        ./configure.sh
+        ```
 * Docker
-```
-```
+    ```
+    sudo pacman -S docker
+    ```
+    + Start & Enable the Docker Service
+        ```
+        sudo systemctl start docker.service
+        ```
 * uv
     + Lightweight rust based python package & tool manager
         ```

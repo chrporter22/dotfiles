@@ -46,6 +46,7 @@ main() {
     install_uv
     install_dotfiles      # dotfiles first
     install_plugins       # then plugin installation
+    install_quarto_from_git  # build from git and install node.js and npm
     prompt_reboot
 }
 
@@ -130,6 +131,36 @@ install_plugins() {
         sleep 2
         tmux kill-session -t temp_plugin_session
     fi
+}
+
+install_quarto_from_git() {
+    local QUARTO_DIR="$HOME/dev/quarto-cli"
+    local QUARTO_BIN="$HOME/.local/bin/quarto"
+
+    if [[ -x "$QUARTO_BIN" ]]; then
+        echo "✔ Quarto already installed at $QUARTO_BIN, skipping."
+        echo "quarto" >> "$SKIPPED_LOG"
+        return
+    fi
+
+    echo "→ Installing Quarto CLI from GitHub..."
+
+    install_package nodejs npm
+
+    if [[ ! -d "$QUARTO_DIR" ]]; then
+        git clone https://github.com/quarto-dev/quarto-cli.git "$QUARTO_DIR"
+    fi
+
+    cd "$QUARTO_DIR" || exit 1
+
+    ./configure.sh 2>>"$ERROR_LOG"
+
+    if [[ ! -x "$QUARTO_BIN" ]]; then
+        echo "❌ Quarto build failed or binary not found at $QUARTO_BIN" >> "$ERROR_LOG"
+        return 1
+    fi
+
+    echo "✔ Quarto CLI installed successfully to $QUARTO_BIN"
 }
 
 prompt_reboot() {

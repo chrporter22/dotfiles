@@ -24,9 +24,9 @@ reboot_prompt() {
 
 # System essentials
 sys_prep() {
-    sudo pacman -Syu --needed base-devel git curl wget firefox \
-        neovim vim github-cli fastfetch htop feh flatpak ueberzug \
-        atool poppler imagemagick highlight zathura-pdf-poppler \
+    sudo pacman -Syu --needed base-devel firefox \
+        feh flatpak ueberzug \
+        mtools atool poppler -pdf-poppler \
         pacman-contrib bluez bluez-utils
 }
 
@@ -63,5 +63,5 @@ post_tools() {
 dotfile_link() {
     sudo pacman -S --needed stow
     cd ~/dotfiles || exit
-    stow i3 picom polybar rofi alacritty xresources
+    stow i3 picom polybar rofi alacritty xresources backgrounds
 }

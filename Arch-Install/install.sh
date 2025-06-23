@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Arch Linux Data Science Install (Nvim Tmux, Zathura; Catppuccin / Rose-pine colorscheme)
-# Neovim language support: Pyhton, R, bash, marckdown, sql, c, c_sharp, rust, lua, latex, html,
+# Arch Linux System tools install (Terminal Emulator; Windows Management; Compositor;
+# Status Bar)
 # Source: https://www.github.com/chrporter22/dotfiles
 # Author: Christian J. Porter
 

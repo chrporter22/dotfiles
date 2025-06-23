@@ -1,47 +1,37 @@
-# Arch - Install
+# Arch - Install Dependencies
+
 * Network Manager
-```
-```
+    ```
+    ```
 * Grub
-```
-```
+    ```
+    ```
 * Enable Systemctl
-```
-```
+    ```
+    ```
 ## Post - Install System Tools
-* pulseaudio
-```
-sudo pacman -S pulseaudio pulseaudio-equalizer pulseaudio-jack
-sudo pacman -S alsa-utils  # run the command alsamixer
-sudo pacman -S pulseaudio pulseaudio-alsa
-```
 
-* bluez bluez-utils
-```
+* Terminal Emulator
+    + [Alacritty](https://github.com/alacritty/alacritty)
+        + [Theme](https://github.com/catppuccin/catppuccin)
+            ```
+            sudo pacman -S alacritty
+            sudo pacman -S ttf-jetbrains-mono-nerd
+            fc-list | grep "JetBrainsMono"
+            sudo pacman -S lsd
+            ```
 
-```
-* curl
-```
-
-```
-* wget
-```
-
-```
-* git
-```
-sudo pacman -S git
-```
-
-* yay
-```
-git clone https://aur.archlinux.org/yay.git
-cd yay
-makepkg -si
-# Clean up after install
-rm -rf ~/yay
-yay --version
-```
+* yay | AUR Helper
+    ```
+    git clone https://aur.archlinux.org/yay.git
+    cd yay
+    makepkg -si
+    ```
+    + Clean up after install
+        ```
+        rm -rf ~/yay
+        yay --version
+        ```
 
 + Window Management & Launcher:
     + Theme: inpsired by [Typecraft-dev](https://guthub.com/Typecraft-dev/dotfiles)
@@ -91,23 +81,38 @@ yay --version
     sudo pacman -S htop
     ```
 
-* Terminal Emulator
-    + [Alactritty](https://github.com/alacritty/alacritty)
-    + [Theme](https://github.com/catppuccin/catppuccin)
-    ```
-    sudo pacman -S alacritty
-    sudo pacman -S ttf-jetbrains-mono-nerd
-    fc-list | grep "JetBrainsMono"
-    sudo pacman -S lsd
-    ```
-
 * Image Viewer
     + [feh](https://github.com/derf/feh)
     ```
     sudo pacman -S feh
     ```
 
+* pulseaudio
+    ```
+    sudo pacman -S pulseaudio pulseaudio-equalizer pulseaudio-jack
+    sudo pacman -S alsa-utils  # run the command alsamixer
+    sudo pacman -S pulseaudio pulseaudio-alsa
+    ```
+
+* bluez bluez-utils
+```
+
+```
+* curl
+```
+
+```
+* wget
+```
+
+```
+* git
+    ```
+    sudo pacman -S git
+    ```
+
 ### Data Science & Developer Tools
+
 * [GNU Stow](https://github.com/aspiers/stow)
     + Manage data science tools and configurations with version control and CI/CD methods
     ```

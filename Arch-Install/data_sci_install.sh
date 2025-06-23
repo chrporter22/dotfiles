@@ -74,8 +74,8 @@ start_installation() {
     install_package \
         base-devel git neovim tmux zathura zathura-pdf-poppler \
         ttf-jetbrains-mono-nerd ttf-font-awesome stow curl wget \
-        vim htop fastfetch ripgrep fzf lsd quarto-cli \
-        r docker gh \
+        vim htop fastfetch ripgrep fzf \
+        r docker github-cli\
         texlive-core texlive-bin texlive-latex texlive-latexextra texlive-formatsextra
 }
 

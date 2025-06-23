@@ -1,61 +1,109 @@
-!/bin/bash
+#!/bin/bash
 
-# Main function to handle installation process
+# Check if a command exists
+is_installed() {
+    command -v "$1" >/dev/null 2>&1
+}
+
+# Install system packages only if not already present
+install_package() {
+    for pkg in "$@"; do
+        if ! pacman -Qi "$pkg" &>/dev/null; then
+            sudo pacman -S --noconfirm "$pkg"
+        else
+            echo "$pkg already installed, skipping."
+        fi
+    done
+}
+
 main() {
     install_yay
     start_installation
+    install_uv
     install_dotfiles
     install_plugins
     prompt_reboot
 }
 
-# Function to install AUR helper
 install_yay() {
-    git clone https://aur.archlinux.org/yay.git
-    cd yay || exit
-    makepkg -si --noconfirm
-    cd ..
+    if ! is_installed yay; then
+        git clone https://aur.archlinux.org/yay.git
+        cd yay || exit
+        makepkg -si --noconfirm
+        cd ..
+    else
+        echo "yay already installed, skipping."
+    fi
 }
 
-# Function to start installation
 start_installation() {
-    install_sys_packages
-}
-
-# Function to install system packages
-install_sys_packages() {
-    sudo pacman -Syu --needed \
+    sudo pacman -Syu --noconfirm
+    install_package \
         base-devel git neovim tmux zathura zathura-pdf-poppler \
-        texlive-core texlive-latexextra ttf-font-awesome stow \
-        curl wget vim htop fastfetch
+        ttf-jetbrains-mono-nerd ttf-font-awesome stow curl wget \
+        vim htop fastfetch ripgrep fzf lsd quarto-cli \
+        r docker gh \
+        texlive-core texlive-bin texlive-latex texlive-latexextra texlive-formatsextra
 }
 
-# Function to clone dotfiles and stow them
+install_uv() {
+    if ! is_installed uv; then
+        cargo install --git https://github.com/astral-sh/uv uv
+        export PATH="$HOME/.cargo/bin:$PATH"
+        echo 'export PATH="$HOME/.cargo/bin:$PATH"' >> ~/.bashrc
+    else
+        echo "uv already installed, skipping."
+    fi
+}
+
 install_dotfiles() {
     if [[ ! -d "$HOME/dotfiles" ]]; then
         git clone https://github.com/yourusername/dotfiles.git ~/dotfiles
     fi
     cd ~/dotfiles || exit
-    stow vim tmux zathura
+    stow vim tmux zathura bashrc nvim
 }
 
-# Function to install Vundle and TPM
 install_plugins() {
-    git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+    # Neovim plugin manager (Lazy.nvim)
+    install_nvim_plugins() {
+        local nvim_lazy_path="$HOME/.local/share/nvim/lazy/lazy.nvim"
+        if [[ ! -d "$nvim_lazy_path" ]]; then
+            git clone https://github.com/folke/lazy.nvim.git "$nvim_lazy_path"
+        else
+            echo "Lazy.nvim already installed, skipping."
+        fi
+    }
+    
+    # Call the new nvim function
+    install_nvim_plugins
+    
+    # Vim plugins
+    if [[ ! -d ~/.vim/bundle/Vundle.vim ]]; then
+        git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+    fi
     vim +PluginInstall +qall
+    source ~/.vimrc
 
-    git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
-    ~/.tmux/plugins/tpm/bin/install_plugins
+    # Tmux plugins
+    if [[ ! -d ~/.tmux/plugins/tpm ]]; then
+        git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+    fi
+
+    # Temporarily launch tmux to install plugins
+    if is_installed tmux; then
+        tmux new-session -d -s temp_plugin_session "~/.tmux/plugins/tpm/bin/install_plugins"
+        sleep 2
+        tmux kill-session -t temp_plugin_session
+    fi
 }
 
-# Function to prompt for reboot
 prompt_reboot() {
-    echo -e "Installation successful. Do you want to reboot? (Y/n)"
+    echo -e "\nInstallation successful. Reboot now? (Y/n)"
     read -r reboot
     if [[ $reboot == "Y" || $reboot == "y" ]]; then
         reboot
     fi
 }
 
-# Execute the script
 main

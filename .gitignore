@@ -1,3 +1,5 @@
+# Hide i3 logs
 i3/.config/i3/logs/
 
-backgrounds/
+# Hide backgrounds
+backgrounds/.config/backgrounds/

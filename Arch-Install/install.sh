@@ -26,7 +26,7 @@ reboot_prompt() {
 sys_prep() {
     sudo pacman -Syu --needed base-devel firefox \
         feh flatpak ueberzug \
-        mtools atool poppler -pdf-poppler \
+        mtools atool \
         pacman-contrib bluez bluez-utils
 }
 

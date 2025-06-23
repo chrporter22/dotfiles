@@ -7,7 +7,7 @@ ERROR_LOG="$HOME/install_errors.log"
 # Parse command-line argument
 if [[ $1 == "--dry-run" ]]; then
     DRY_RUN=true
-    echo "🧪 Dry run mode enabled. No changes will be made."
+    echo "Dry run mode enabled. No changes will be made."
     > "$SKIPPED_LOG"
     > "$ERROR_LOG"
 fi
@@ -90,11 +90,14 @@ install_uv() {
 }
 
 install_dotfiles() {
-    if [[ ! -d "$HOME/dotfiles" ]]; then
-        git clone https://github.com/yourusername/dotfiles.git ~/dotfiles
+    local target="$HOME/.dotfiles"
+
+    if [[ ! -d "$target" ]]; then
+        git clone https://github.com/chrporter22/dotfiles.git "$target"
     fi
-    cd ~/dotfiles || exit
-    stow vim tmux zathura bashrc nvim
+
+    cd "$target" || exit
+    stow --target="$HOME" vim tmux zathura bashrc nvim
 }
 
 install_plugins() {

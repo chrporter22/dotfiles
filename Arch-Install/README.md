@@ -59,7 +59,11 @@ yay --version
         ```
         + Polybar
         ```
-        sudo pacman -S picom 
+        sudo pacman -S polybar 
+        ```
+        + Picom
+        ```
+        sudo pacman -S picom
         ```
 
 + PDF Viewer: Zathura

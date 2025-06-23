@@ -65,32 +65,30 @@ install_dotfiles() {
 }
 
 install_plugins() {
-    # Neovim plugin manager (Lazy.nvim)
-    install_nvim_plugins() {
-        local nvim_lazy_path="$HOME/.local/share/nvim/lazy/lazy.nvim"
-        if [[ ! -d "$nvim_lazy_path" ]]; then
-            git clone https://github.com/folke/lazy.nvim.git "$nvim_lazy_path"
-        else
-            echo "Lazy.nvim already installed, skipping."
-        fi
-    }
-    
-    # Call the new nvim function
-    install_nvim_plugins
-    
-    # Vim plugins
+    # Lazy.nvim (Neovim plugin manager)
+    local nvim_lazy_path="$HOME/.local/share/nvim/lazy/lazy.nvim"
+    if [[ ! -d "$nvim_lazy_path" ]]; then
+        git clone https://github.com/folke/lazy.nvim.git "$nvim_lazy_path"
+    else
+        echo "Lazy.nvim already installed, skipping."
+    fi
+
+    # Vundle (classic Vim plugin manager)
     if [[ ! -d ~/.vim/bundle/Vundle.vim ]]; then
         git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+    else
+        echo "Vundle already installed, skipping."
     fi
     vim +PluginInstall +qall
-    source ~/.vimrc
+    [[ -f ~/.vimrc ]] && source ~/.vimrc
 
-    # Tmux plugins
+    # Tmux Plugin Manager (TPM)
     if [[ ! -d ~/.tmux/plugins/tpm ]]; then
         git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+    else
+        echo "TPM already installed, skipping."
     fi
 
-    # Temporarily launch tmux to install plugins
     if is_installed tmux; then
         tmux new-session -d -s temp_plugin_session "~/.tmux/plugins/tpm/bin/install_plugins"
         sleep 2

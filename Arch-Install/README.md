@@ -128,6 +128,7 @@ sudo pacman -S github-cli
 * Quarto CLI
     ```
     git clone https://github.com/quarto-dev/quarto-cli
+    sudo pacman -S nodejs npm
     ```
     + run setup script
         ```
@@ -150,11 +151,13 @@ sudo pacman -S github-cli
         ```
 
 * ripgep
-```
-sudo pacman -S ripgrep
-```
+    + Needed for Neovim Snacks Dashboard
+        ```
+        sudo pacman -S ripgrep
+        ```
 
 * fzf
-```
-sudo pacman -S fzf
-```
+    + Fuzzy finder
+        ```
+        sudo pacman -S fzf
+        ```

@@ -123,6 +123,18 @@
     ```
     sudo pacman -S r
     ```
+* rust
+    ```
+
+    ```
+* nodejs
+    ```
+
+    ```
+* npm
+    ```
+
+    ```
 * Github CLI
 ```
 sudo pacman -S github-cli

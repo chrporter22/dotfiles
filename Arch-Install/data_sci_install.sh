@@ -1,19 +1,42 @@
 #!/bin/bash
 
-# Check if a command exists
+DRY_RUN=false
+SKIPPED_LOG="$HOME/install_skipped_packages.log"
+ERROR_LOG="$HOME/install_errors.log"
+
+# Parse command-line argument
+if [[ $1 == "--dry-run" ]]; then
+    DRY_RUN=true
+    echo "🧪 Dry run mode enabled. No changes will be made."
+    > "$SKIPPED_LOG"
+    > "$ERROR_LOG"
+fi
+
+# Check if command exists
 is_installed() {
     command -v "$1" >/dev/null 2>&1
 }
 
-# Install system packages only if not already present
+# Install system packages only if not already present (with logging)
 install_package() {
+    local pkgs_to_install=()
     for pkg in "$@"; do
-        if ! pacman -Qi "$pkg" &>/dev/null; then
-            sudo pacman -S --noconfirm "$pkg"
+        if ! pacman -Qq "$pkg" &>/dev/null; then
+            echo "→ Queuing $pkg for installation..."
+            pkgs_to_install+=("$pkg")
         else
-            echo "$pkg already installed, skipping."
+            echo "✔ $pkg already installed, skipping."
+            echo "$pkg" >> "$SKIPPED_LOG"
         fi
     done
+
+    if [[ ${#pkgs_to_install[@]} -gt 0 ]]; then
+        if $DRY_RUN; then
+            echo "🔍 Would install: ${pkgs_to_install[*]}"
+        else
+            sudo pacman -S --noconfirm --needed "${pkgs_to_install[@]}" 2>>"$ERROR_LOG"
+        fi
+    fi
 }
 
 # Call main function to run entire setup script
@@ -38,7 +61,16 @@ install_yay() {
 }
 
 start_installation() {
-    sudo pacman -Syu --noconfirm
+    echo -e "Checking for available updates..."
+
+    if ! sudo pacman -Qu | grep -q .; then
+        echo "System is already up to date."
+    else
+        echo "Updates available. Proceeding with cautious system upgrade..."
+        sudo pacman -Syu --noconfirm
+    fi
+
+    echo -e "Checking and installing required packages..."
     install_package \
         base-devel git neovim tmux zathura zathura-pdf-poppler \
         ttf-jetbrains-mono-nerd ttf-font-awesome stow curl wget \

@@ -76,8 +76,15 @@ start_installation() {
         base-devel git neovim tmux zathura zathura-pdf-poppler \
         ttf-jetbrains-mono-nerd ttf-font-awesome stow curl wget \
         vim htop fastfetch ripgrep fzf \
-        r docker github-cli\
+        r docker github-cli rustup nodejs npm \
         texlive-core texlive-bin texlive-latex texlive-latexextra texlive-formatsextra
+
+    echo -e "Setting up Rust stable toolchain..."
+    rustup default stable
+
+    echo -e "Verifying Node.js and npm versions..."
+    node -v
+    npm -v
 }
 
 install_uv() {

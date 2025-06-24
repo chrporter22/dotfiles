@@ -119,6 +119,10 @@
     sudo pacman -S rustup
     rustup default stable
     ```
+* go
+    ```
+    sudo pacman -S go
+    ```
 * nodejs & npm
     ```
     sudo pacman -S nodejs npm

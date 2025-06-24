@@ -14,3 +14,6 @@ PS1='[\u@\h \W]\$ '
 
 # Add uv and rust apps to PATH
 export PATH="$HOME/.cargo/bin:$PATH"
+
+# Add quarto path
+# export PATH="$HOME/.local/bin:$PATH"

@@ -8,10 +8,9 @@ return {
         auto_install = false,
         ensure_installed = {
           "bash",
-          "c",
-          "c_sharp",
           "python",
           "r",
+          "lua",
           "dockerfile",
           "sql",
           "rust",

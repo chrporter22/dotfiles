@@ -52,12 +52,12 @@
         sudo pacman -S picom
         ```
 + PDF Viewer: Zathura
-    + Theme: Pywal [Zathura-Pywal](https://github.com/GideonWolfe/Zathura-Pywal)
+    + Theme: [Zathura-Pywal](https://github.com/GideonWolfe/Zathura-Pywal) for transparency patch
     ```
     sudo pacman -S zathura zathura-pdf-poppler
     git clone https://github.com/GideonWolfe/Zathura-Pywal
     ```
-    + [VimTex](https://github.com/lervag/vimtex) plugin compatible
+    + [VimTex](https://github.com/lervag/vimtex) vim/nvim plugin compatible
         + [latexmk](https://github.com/gingerhot/latexmk)
         ```
         sudo pacman -S texlive-binextra

@@ -10,7 +10,6 @@ return {
           "bash",
           "python",
           "r",
-          "lua",
           "dockerfile",
           "sql",
           "rust",

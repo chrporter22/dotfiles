@@ -18,7 +18,7 @@
             fc-list | grep "JetBrainsMono"
             sudo pacman -S lsd
             ```
-* yay | AUR Helper
+* [yay](https://aur.archlinux.org/yay.git) | AUR Helper
     ```
     git clone https://aur.archlinux.org/yay.git
     cd yay

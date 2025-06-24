@@ -1,5 +1,4 @@
 # Arch - Install Dependencies
-
 * Network Manager
     ```
     ```
@@ -10,7 +9,6 @@
     ```
     ```
 ## Post - Install System Tools
-
 * Terminal Emulator
     + [Alacritty](https://github.com/alacritty/alacritty)
         + [Theme](https://github.com/catppuccin/catppuccin)
@@ -20,7 +18,6 @@
             fc-list | grep "JetBrainsMono"
             sudo pacman -S lsd
             ```
-
 * yay | AUR Helper
     ```
     git clone https://aur.archlinux.org/yay.git
@@ -32,7 +29,6 @@
         rm -rf ~/yay
         yay --version
         ```
-
 + Window Management & Launcher:
     + Theme: inpsired by [Typecraft-dev](https://guthub.com/Typecraft-dev/dotfiles)
         + i3
@@ -55,7 +51,6 @@
         ```
         sudo pacman -S picom
         ```
-
 + PDF Viewer: Zathura
     + Theme: Pywal [Zathura-Pywal](https://github.com/GideonWolfe/Zathura-Pywal)
     ```
@@ -68,80 +63,82 @@
         sudo pacman -S texlive-binextra
         sudo pacman -S texlive-core texlive-bin texlive-latex texlive-latexextra texlive-formatsextra
         ```
-
 * Fetch:
     + [fastfetch](https://github.com/fastfetch-cli/fastfetch)
         ```
         sudo pacman -S fastfetch
         ```
-
 * Process Viewer 
     + [htop](https://github.com/htop-dev/htop)
     ```
     sudo pacman -S htop
     ```
-
 * Image Viewer
     + [feh](https://github.com/derf/feh)
     ```
     sudo pacman -S feh
     ```
-
-* pulseaudio
+* Audio
     ```
     sudo pacman -S pulseaudio pulseaudio-equalizer pulseaudio-jack
     sudo pacman -S alsa-utils  # run the command alsamixer
     sudo pacman -S pulseaudio pulseaudio-alsa
     ```
-
-* bluez bluez-utils
-```
-
-```
+* Bluetooth
+    ```
+    bluez bluez-utils
+    ```
 * curl
-```
+    ```
 
-```
+    ``` 
 * wget
-```
+    ```
 
-```
+    ```
 * git
     ```
     sudo pacman -S git
     ```
-
 ### Data Science & Developer Tools
-
 * [GNU Stow](https://github.com/aspiers/stow)
     + Manage data science tools and configurations with version control and CI/CD methods
     ```
     pacman -S stow
     ```
 * Pyhton3
+    ```
+    python3 --version
+    ```
 * R 
     ```
     sudo pacman -S r
     ```
 * rust
     ```
-
+    sudo pacman -S rustup
+    rustup default stable
     ```
-* nodejs
+* nodejs & npm
     ```
-
-    ```
-* npm
-    ```
-
+    sudo pacman -S nodejs npm
     ```
 * Github CLI
-```
-sudo pacman -S github-cli
-```
+    ```
+    sudo pacman -S github-cli
+    ```
 * Vim
+    ```
+    sudo pacman -S vim
+    ```
 * Neovim
+    ```
+    sudo pacman -S neovim
+    ```
 * Tmux
+    ```
+    sudo pacman -S tmux 
+    ```
 * Quarto CLI
     ```
     git clone https://github.com/quarto-dev/quarto-cli
@@ -166,13 +163,11 @@ sudo pacman -S github-cli
         cargo install --git https://github.com/astral-sh/uv uv
         export PATH="$HOME/.cargo/bin:$PATH"
         ```
-
 * ripgep
     + Needed for Neovim Snacks Dashboard
         ```
         sudo pacman -S ripgrep
         ```
-
 * fzf
     + Fuzzy finder
         ```

@@ -46,7 +46,8 @@ main() {
     install_uv
     install_dotfiles      # dotfiles first
     install_plugins       # then plugin installation
-    install_quarto_from_git  # build from git and install node.js and npm
+    install_zathura_pywal     # install transparency-patched zathura frontend
+    install_quarto_from_git  # build from git and check for nodejs & npm
     prompt_reboot
 }
 
@@ -174,6 +175,30 @@ install_quarto_from_git() {
     fi
 
     echo "✔ Quarto CLI installed successfully to $QUARTO_BIN"
+}
+
+install_zathura_pywal() {
+    local ZPW_DIR="$HOME/dev/zathura-pywal"
+
+    echo "→ Installing zathura-pywal for alpha transparency support..."
+
+    if [[ -d "$ZPW_DIR" ]]; then
+        echo "✔ zathura-pywal repo already exists, pulling latest changes..."
+        git -C "$ZPW_DIR" pull
+    else
+        git clone https://github.com/pystardust/zathura-pywal.git "$ZPW_DIR"
+    fi
+
+    cd "$ZPW_DIR" || exit 1
+
+    if $DRY_RUN; then
+        echo "Would run zathura-pywal setup script: ./install.sh"
+    else
+        chmod +x install.sh
+        ./install.sh --no-pywal 2>>"$ERROR_LOG"
+    fi
+
+    echo "✔ zathura-pywal installed. Remember to use it with a compatible zathurarc config."
 }
 
 prompt_reboot() {

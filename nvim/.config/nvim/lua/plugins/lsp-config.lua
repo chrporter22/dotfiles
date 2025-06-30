@@ -75,30 +75,43 @@ return {
              filetypes = { "r", "rmd", "quarto" },
              log_level = 2
        })
-      lspconfig.textlsp.setup({
-            cmd = { "textlsp" },
-            filetypes = { "text", "tex", "org" },
+
+       lspconfig.texlab.setup({
             settings = {
-                textLSP = {
-                    analysers = {
-                        languagetool = {
-                            check_text = {
-                                on_change = false,
-                                on_open = true,
-                                on_save = true
-                            },
-                            enabled = true
-                        }
+                texlab = {
+                    build = {
+                        executable = "latexmk",
+                        args = { "-pdf", "-interaction=nonstopmode", "-synctex=1", "%f" },
+                        onSave = true,
                     },
-                    documents = {
-                        org = {
-                            org_todo_keywords = { "TODO", "IN_PROGRESS", "DONE" }
-                        }
-                    }
+                    -- forwardSearch = {
+                    --     executable = "zathura",  -- or your preferred PDF viewer
+                    --     args = { "--synctex-forward", "%l:1:%f", "%p" },
+                    -- },
+                    chktex = {
+                        onEdit = true,
+                        onOpenAndSave = true,
+                    },
                 }
             }
-       })
+        })
 
+        lspconfig.lua_ls.setup({
+            settings = {
+                Lua = {
+                    runtime = { version = "LuaJIT" },
+                    diagnostics = {
+                        globals = { "vim" }, -- Recognize the `vim` global
+                    },
+                    workspace = {
+                        library = vim.api.nvim_get_runtime_file("", true),
+                        checkThirdParty = false,
+                    },
+                    telemetry = { enable = false },
+                },
+            },
+        })
+        
       vim.keymap.set("n", "K", vim.lsp.buf.hover, {})
       vim.keymap.set("n", "<leader>gd", vim.lsp.buf.definition, {})
       vim.keymap.set("n", "<leader>gr", vim.lsp.buf.references, {})

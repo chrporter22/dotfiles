@@ -84,8 +84,11 @@ Use `amd-ucode` or `intel-ucode` for improved cpu performance.
 
 # Fstab
 Generate UUID for partitions.
-`genfstab -U /mnt >> /etc/fstab`
-
+    ```
+    echo /efi vfat defaults 0 1" >> /etc/fstab
+    echo none swap sw 0 0" >> /etc/fstab
+    echo / ext4 defaults 0 2" >> /etc/fstab
+    ```
 # Chroot prep
 * Bind directories
     ```

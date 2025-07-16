@@ -24,7 +24,6 @@
 Create three main partitions with cfdisk EFI, ROOT, and SWAP; remember disk names for future reference.
 * EFI - 1 GB
 
-
 * root - depends on how much you are going to install
 
 * Swap - 1.5 x RAM
@@ -192,7 +191,7 @@ vim /etc/locale.conf
         ```
 + Window Management & Launcher:
     + Theme: inpsired by [Typecraft-dev](https://guthub.com/Typecraft-dev/dotfiles)
-        + i3
+        + [i3](https://github.com/i3/i3.github.io)
         ```
         sudo pacman -S i3-wm i3lock i3status dmenu
         sudo pacman -S xorg-xrandr xorg-xinit
@@ -200,19 +199,19 @@ vim /etc/locale.conf
         sudo pacman -S xf86-input-libinput  # Touchpad Support
         sudo pacman -S i3-gaps
         ```
-        + Rofi
+        + [Rofi](https://github.com/davatorium/rofi)
         ```
         sudo pacman -S rofi 
         ```
-        + Polybar
+        + [Polybar](https://github.com/polybar/polybar)
         ```
         sudo pacman -S polybar 
         ```
-        + Picom
+        + [Picom](https://github.com/yshui/picom)
         ```
         sudo pacman -S picom
         ```
-+ PDF Viewer: Zathura
++ PDF Viewer: [Zathura](https://github.com/pwmt/zathura)
     + Theme: [Zathura-Pywal](https://github.com/GideonWolfe/Zathura-Pywal) for transparency patch
     ```
     sudo pacman -S zathura zathura-pdf-poppler

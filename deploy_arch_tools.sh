@@ -39,11 +39,10 @@ xorg_stack() {
 # Window manager, compositor, launcher, bar
 wm_suite() {
     sudo pacman -S --needed \
-        i3-wm i3status \
+        i3-wm i3status i3-gaps \
         rofi \
         picom \       # Compositor for transparency and effects
         polybar \     # Customizable status bar
-        xbanish       # Hides mouse cursor when typing
 }
 
 # Post-install system tools and terminal
@@ -65,3 +64,5 @@ dotfile_link() {
     cd ~/dotfiles || exit
     stow i3 picom polybar rofi alacritty xresources backgrounds
 }
+
+kickstart

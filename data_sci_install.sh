@@ -1,8 +1,45 @@
 #!/bin/bash
 
+# =============================================
+# DOTFILES INSTALLER — x86_64 + ARM SUPPORT
+# ---------------------------------------------
+# Development Environment Setup:
+#   - Installing packages only if missing
+#   - Managing your dotfiles with `stow`
+#   - Setting up Neovim/Tmux plugins, TPM, Zathura, etc.
+#   - Detecting architecture (x86_64 or ARM64 for Raspberry Pi)
+# 
+# Pairs with headless Raspberry Pi 5 NVMe/SD deploy script,
+# for dotfile parity across devices.
+# =============================================
+
 DRY_RUN=false
 SKIPPED_LOG="$HOME/install_skipped_packages.log"
 ERROR_LOG="$HOME/install_errors.log"
+IS_ARM=false  # Will be set dynamically
+
+# === Arch Detection ===
+detect_architecture() {
+    ARCH=$(uname -m)
+    case "$ARCH" in
+        aarch64)
+            echo "Detected ARM64 (Raspberry Pi 5, etc.)"
+            IS_ARM=true
+            ;;
+        armv7l)
+            echo "Detected 32-bit ARM (older Pi boards)"
+            IS_ARM=true
+            ;;
+        x86_64)
+            echo "Detected x86_64 (ThinkPad, desktop, etc.)"
+            IS_ARM=false
+            ;;
+        *)
+            echo "Unknown architecture: $ARCH — proceeding cautiously..."
+            IS_ARM=false
+            ;;
+    esac
+}
 
 # Parse command-line argument
 if [[ $1 == "--dry-run" ]]; then
@@ -22,17 +59,17 @@ install_package() {
     local pkgs_to_install=()
     for pkg in "$@"; do
         if ! pacman -Qq "$pkg" &>/dev/null; then
-            echo "→ Queuing $pkg for installation..."
+            echo "Queuing $pkg for installation..."
             pkgs_to_install+=("$pkg")
         else
-            echo "✔ $pkg already installed, skipping."
+            echo "$pkg already installed, skipping."
             echo "$pkg" >> "$SKIPPED_LOG"
         fi
     done
 
     if [[ ${#pkgs_to_install[@]} -gt 0 ]]; then
         if $DRY_RUN; then
-            echo "🔍 Would install: ${pkgs_to_install[*]}"
+            echo "Would install: ${pkgs_to_install[*]}"
         else
             sudo pacman -S --noconfirm --needed "${pkgs_to_install[@]}" 2>>"$ERROR_LOG"
         fi
@@ -41,6 +78,7 @@ install_package() {
 
 # Call main function to run entire setup script
 main() {
+    detect_architecture
     install_yay
     start_installation
     install_uv
@@ -48,7 +86,7 @@ main() {
     install_plugins       # then plugin installation
     install_zathura_pywal     # install transparency-patched zathura frontend
     install_quarto_from_git  # build from git and check for nodejs & npm
-    prompt_reboot
+    # prompt_reboot
 }
 
 install_yay() {
@@ -77,7 +115,7 @@ start_installation() {
         base-devel git neovim tmux zathura zathura-pdf-poppler \
         ttf-jetbrains-mono-nerd ttf-font-awesome stow curl wget \
         vim htop fastfetch ripgrep fzf \
-        r docker github-cli rustup nodejs npm \
+        r docker openssh nmap redis github-cli go rustup nodejs npm \
         texlive-core texlive-bin texlive-latex texlive-latexextra texlive-formatsextra
 
     echo -e "Setting up Rust stable toolchain..."
@@ -90,16 +128,16 @@ start_installation() {
 
 install_uv() {
     if ! is_installed uv; then
-        echo "→ Checking for Rust toolchain (cargo)..."
+        echo "Checking for Rust toolchain (cargo)..."
         install_package rust
 
-        echo "→ Installing uv via cargo..."
+        echo "Installing uv via cargo..."
         cargo install --git https://github.com/astral-sh/uv uv 2>>"$ERROR_LOG"
 
         export PATH="$HOME/.cargo/bin:$PATH"
         echo 'export PATH="$HOME/.cargo/bin:$PATH"' >> ~/.bashrc
     else
-        echo "✔ uv already installed, skipping."
+        echo "uv already installed, skipping."
         echo "uv" >> "$SKIPPED_LOG"
     fi
 }
@@ -152,12 +190,12 @@ install_quarto_from_git() {
     local QUARTO_BIN="$HOME/.local/bin/quarto"
 
     if [[ -x "$QUARTO_BIN" ]]; then
-        echo "✔ Quarto already installed at $QUARTO_BIN, skipping."
+        echo "Quarto already installed at $QUARTO_BIN, skipping."
         echo "quarto" >> "$SKIPPED_LOG"
         return
     fi
 
-    echo "→ Installing Quarto CLI from GitHub..."
+    echo "Installing Quarto CLI from GitHub..."
 
     install_package nodejs npm
 
@@ -170,20 +208,20 @@ install_quarto_from_git() {
     ./configure.sh 2>>"$ERROR_LOG"
 
     if [[ ! -x "$QUARTO_BIN" ]]; then
-        echo "❌ Quarto build failed or binary not found at $QUARTO_BIN" >> "$ERROR_LOG"
+        echo "Quarto build failed or binary not found at $QUARTO_BIN" >> "$ERROR_LOG"
         return 1
     fi
 
-    echo "✔ Quarto CLI installed successfully to $QUARTO_BIN"
+    echo "Quarto CLI installed successfully to $QUARTO_BIN"
 }
 
 install_zathura_pywal() {
     local ZPW_DIR="$HOME/dev/zathura-pywal"
 
-    echo "→ Installing zathura-pywal for alpha transparency support..."
+    echo "Installing zathura-pywal for alpha transparency support..."
 
     if [[ -d "$ZPW_DIR" ]]; then
-        echo "✔ zathura-pywal repo already exists, pulling latest changes..."
+        echo "zathura-pywal repo already exists, pulling latest changes..."
         git -C "$ZPW_DIR" pull
     else
         git clone https://github.com/pystardust/zathura-pywal.git "$ZPW_DIR"
@@ -194,19 +232,19 @@ install_zathura_pywal() {
     if $DRY_RUN; then
         echo "Would run zathura-pywal setup script: ./install.sh"
     else
-        chmod +x install.sh
+        # chmod +x install.sh
         ./install.sh --no-pywal 2>>"$ERROR_LOG"
     fi
 
-    echo "✔ zathura-pywal installed. Remember to use it with a compatible zathurarc config."
+    echo "zathura-pywal installed. Remember to use it with a compatible zathurarc config."
 }
 
-prompt_reboot() {
-    echo -e "\nInstallation successful. Reboot now? (Y/n)"
-    read -r reboot
-    if [[ $reboot == "Y" || $reboot == "y" ]]; then
-        reboot
-    fi
-}
+# prompt_reboot() {
+#     echo -e "\nInstallation successful. Reboot now? (Y/n)"
+#     read -r reboot
+#     if [[ $reboot == "Y" || $reboot == "y" ]]; then
+#         reboot
+#     fi
+# }
 
 main

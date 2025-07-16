@@ -1,14 +1,172 @@
-# Arch - Install Dependencies
-* Network Manager
+# Arch - Install from Bootable Disk
+* Set font if needed during install
     ```
+    setfont ter-132N
     ```
-* Grub
+
+* Connect to Inernet with Wifi
     ```
+    iwctl
+    device list 
+    device wlan0 set-property powered on # <-- if needed
+    station wlan0 connect WIFI
+    exit
+    ping -c 5 archlinux.org
     ```
+
+* Sync package databases
+    ```
+    pacman -Syu
+    pacman -S archlinux-keyring
+    ```
+
+# Partitioning
+Create three main partitions with cfdisk EFI, ROOT, and SWAP; remember disk names for future reference.
+* EFI - 1 GB
+
+
+* root - depends on how much you are going to install
+
+* Swap - 1.5 x RAM
+    ```
+    lsblk #For printing out our current disk
+    cfdisk /dev/nvme0n1
+    ```
+
+* Format EFI Partition
+    ```
+    mkfs.fat -F32 /dev/nvme0n1p5
+    ```
+
+* Format root
+    ```
+    mkfs.ext4 /dev/nvme0n1p6
+    ```
+
+* Format Swap Partition
+    ```
+    mkswap /dev/nvme0n1p7
+    swapon /dev/nvme0n1p7
+    ```
+
+# Mounting
+* Make directories
+    ```
+    mkdir /mnt
+    mkdir /mnt/efi
+    ```
+
+* Mount `root` partition into `/mnt`.
+    ```
+    mount /dev/nvme0n1p6 /mnt
+    ```
+
+* Check `/mnt` with `ls`:
+    ```
+    ls /mnt
+    ```
+
+* Mount efi
+    ```
+    mount /dev/nvme0n1p5 /mnt/efi
+    ```
+
+# Mirrorlist
+* Improve download speed:
+    ```
+    pacman -S reflector
+    reflector --latest 200 --sort rate --save /etc/pacman.d/mirrorlist
+    ```
+
+# Core Arch and Linux Kernel 
+Use `amd-ucode` or `intel-ucode` for improved cpu performance.
+`pacstrap /mnt base base-devel linux linux-firmware`
+
+# Fstab
+Generate UUID for partitions.
+`genfstab -U /mnt >> /etc/fstab`
+
+# Chroot prep
+* Bind directories
+    ```
+    mount --bind /dev /mnt/dev
+    mount --bind /proc /mnt/proc
+    mount --bind /sys /mnt/sys
+    cp /etc/resolv.conf /mnt/etc/
+    ```
+
+# Chroot
+* Change root 
+   ```
+    arch-chroot /mnt
+    ```
+
+# Set Time
+`sudo ln -sf /usr/share/zoneinfo/America/New_York /etc/localtime`
+`hwclock --systohc`
+
+# Generate Locale
+`vim /etc/locale.gen`
+
+`locale-gen`
+
+# Create a Locale Config
+vim /etc/locale.conf
+* Add:
+    ```
+    LANG = en_US.UTF-8
+    ```
+
+# Host Name
+`vim /etc/hostname`
+
+# Local IP For Host
+`vim /etc/hosts`
+* Add:
+    ```
+    verbatim
+    127.0.0.1	localhost
+    ::1			localhost
+    127.0.1.1	Username.localdomain	Username
+    ```
+
+# Set Password
+`passwd`
+
+# Boot Loader
+`pacman -S grub`
+
+# Grub
+`grub-install --target=i386-pc /dev/<YOUR_PARTITION>`
+`grub-mkconfig -o /boot/grub/grub.cfg`
+
+# Enabling Systemctl
+`systemctl enable NetworkManager`
+
+# Users
+`useradd -mG wheel <Username>`
+
+# Sudo Permissions / Sudoers
+* Uncomment:
+    ```
+    EDITOR=vim visudo
+    ```
+
+# Password & System Control
 * Enable Systemctl
     ```
+    passwd <Username>
     ```
-## Post - Install System Tools
+
+# Exit Chroot
+* exit
+    + Unmount
+        ```
+        umount -a
+        reboot
+        ```
+
+# Post - Install System Tools
 * Terminal Emulator
     + [Alacritty](https://github.com/alacritty/alacritty)
         + [Theme](https://github.com/catppuccin/catppuccin)
@@ -88,19 +246,24 @@
     ```
     bluez bluez-utils
     ```
-* curl
+* curl & wget
     ```
-
+    sudo pacman -Syu git curl
     ``` 
-* wget
-    ```
-
-    ```
 * git
     ```
     sudo pacman -S git
     ```
-### Data Science & Developer Tools
+* nmap
+    ```
+    sudo pacman -S nmap
+    ```
+* openssh
+    ```
+    sudo pacman -S openssh
+    ```
+
+# Data Science & Developer Tools
 * [GNU Stow](https://github.com/aspiers/stow)
     + Manage data science tools and configurations with version control and CI/CD methods
     ```
@@ -126,6 +289,10 @@
 * nodejs & npm
     ```
     sudo pacman -S nodejs npm
+    ```
+* redis
+    ```
+    sudo pacman -S redis
     ```
 * Github CLI
     ```

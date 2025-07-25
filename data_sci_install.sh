@@ -179,8 +179,9 @@ install_plugins() {
     fi
 
     if is_installed tmux; then
-        tmux new-session -d -s temp_plugin_session "~/.tmux/plugins/tpm/bin/install_plugins"
-        sleep 2
+        tmux new-session -d -s temp_plugin_session ~/.tmux/plugins/tpm/bin/install_plugins
+        # tmux new-session -d -s temp_plugin_session "~/.tmux/plugins/tpm/bin/install_plugins"
+        sleep 5
         tmux kill-session -t temp_plugin_session
     fi
 }

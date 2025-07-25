@@ -226,6 +226,11 @@ install_zathura_pywal() {
     else
         git clone https://github.com/pystardust/zathura-pywal.git "$ZPW_DIR"
     fi
+    
+    if [[ ! -d "$ZPW_DIR" ]]; then
+        echo "Failed to clone zathura-pywal. Directory not found."
+        exit 1
+    fi
 
     cd "$ZPW_DIR" || exit 1
 

@@ -85,7 +85,7 @@ main() {
     install_zathura_pywal     # install transparency-patched zathura frontend
     install_dotfiles      # dotfiles first
     install_plugins       # then plugin installation
-    install_quarto_from_git  # build from git and check for nodejs & npm
+    # install_quarto_from_git  # build from git and check for nodejs & npm
     # prompt_reboot
 }
 
@@ -150,7 +150,7 @@ install_dotfiles() {
     fi
 
     cd "$target" || exit
-    stow --target="$HOME" vim tmux zathura bashrc nvim
+    stow --target="$HOME" vim tmux zathura nvim  # bashrc 
 }
 
 install_plugins() {

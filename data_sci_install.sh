@@ -87,6 +87,7 @@ main() {
     install_plugins       # then plugin installation
     # install_quarto_from_git  # build from git and check for nodejs & npm
     # prompt_reboot
+    report_status
 }
 
 install_yay() {
@@ -266,5 +267,35 @@ install_zathura_pywal() {
 #         reboot
 #     fi
 # }
+
+# === System Summary & Reboot Readiness ===
+report_status() {
+    echo -e "\n===== INSTALLATION SUMMARY ====="
+    
+    echo -e "\nArchitecture:"
+    uname -m
+
+    echo -e "\nInstalled Dotfiles:"
+    ls "$HOME/.dotfiles" 2>/dev/null || echo "Dotfiles directory missing."
+
+    echo -e "\nInstalled Vim Plugins:"
+    ls ~/.vim/bundle 2>/dev/null || echo "Vim plugin directory missing."
+
+    echo -e "\nNeovim Lazy Plugins:"
+    ls "$HOME/.local/share/nvim/lazy" 2>/dev/null || echo "Lazy.nvim directory missing."
+
+    echo -e "\nInstalled Tmux Plugins:"
+    ls "$HOME/.tmux/plugins" 2>/dev/null || echo "TPM not installed."
+
+    echo -e "\nPackages Skipped:"
+    sort "$SKIPPED_LOG" | uniq
+
+    echo -e "\nErrors (if any):"
+    if [[ -s "$ERROR_LOG" ]]; then
+        cat "$ERROR_LOG"
+    else
+        echo "No installation errors logged."
+    fi
+}
 
 main

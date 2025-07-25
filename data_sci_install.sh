@@ -224,7 +224,7 @@ install_zathura_pywal() {
         echo "zathura-pywal repo already exists, pulling latest changes..."
         git -C "$ZPW_DIR" pull
     else
-        git clone https://github.com/pystardust/zathura-pywal.git "$ZPW_DIR"
+        git clone https://github.com/GideonWolfe/Zathura-Pywal.git "$ZPW_DIR"
     fi
     
     if [[ ! -d "$ZPW_DIR" ]]; then

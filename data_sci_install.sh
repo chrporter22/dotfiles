@@ -82,9 +82,9 @@ main() {
     install_yay
     start_installation
     install_uv
+    install_zathura_pywal     # install transparency-patched zathura frontend
     install_dotfiles      # dotfiles first
     install_plugins       # then plugin installation
-    install_zathura_pywal     # install transparency-patched zathura frontend
     install_quarto_from_git  # build from git and check for nodejs & npm
     # prompt_reboot
 }

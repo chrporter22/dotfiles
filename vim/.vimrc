@@ -5,7 +5,7 @@ filetype off                  " required
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 " alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
+" call vundle#begin('~/some/path/here')
 
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
@@ -53,7 +53,7 @@ set termguicolors
 
 " colorscheme atom-dark-256
 " colorscheme zenburn
-"colorscheme catppuccin_mocha
+" colorscheme catppuccin_mocha
 
 
 " Color name (:help cterm-colors) or ANSI code

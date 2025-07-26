@@ -172,13 +172,6 @@ install_plugins() {
     vim +PluginInstall +qall
     [[ -f ~/.vimrc ]] && source ~/.vimrc
 
-    # Tmux Plugin Manager (TPM)
-    # if [[ ! -d ~/.tmux/plugins/tpm ]]; then
-    #     git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
-    # else
-    #     echo "TPM already installed, skipping."
-    # fi
-   
     # Tmux Plugin Manager (TPM) setup
     if [[ ! -d "$HOME/.tmux/plugins/tpm" ]]; then
         git clone https://github.com/tmux-plugins/tpm "$HOME/.tmux/plugins/tpm"
@@ -260,14 +253,6 @@ install_zathura_pywal() {
     echo "zathura-pywal installed. Remember to use it with a compatible zathurarc config."
 }
 
-# prompt_reboot() {
-#     echo -e "\nInstallation successful. Reboot now? (Y/n)"
-#     read -r reboot
-#     if [[ $reboot == "Y" || $reboot == "y" ]]; then
-#         reboot
-#     fi
-# }
-
 # === System Summary & Reboot Readiness ===
 report_status() {
     echo -e "\n===== INSTALLATION SUMMARY ====="
@@ -297,5 +282,13 @@ report_status() {
         echo "No installation errors logged."
     fi
 }
+
+# prompt_reboot() {
+#     echo -e "\nInstallation successful. Reboot now? (Y/n)"
+#     read -r reboot
+#     if [[ $reboot == "Y" || $reboot == "y" ]]; then
+#         reboot
+#     fi
+# }
 
 main

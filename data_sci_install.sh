@@ -172,23 +172,32 @@ install_plugins() {
     [[ -f ~/.vimrc ]] && source ~/.vimrc
 
     # Tmux Plugin Manager (TPM)
-    if [[ ! -d ~/.tmux/plugins/tpm ]]; then
-        git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+    # if [[ ! -d ~/.tmux/plugins/tpm ]]; then
+    #     git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+    # else
+    #     echo "TPM already installed, skipping."
+    # fi
+   
+    # Tmux Plugin Manager (TPM) setup
+    if [[ ! -d "$HOME/.tmux/plugins/tpm" ]]; then
+        git clone https://github.com/tmux-plugins/tpm "$HOME/.tmux/plugins/tpm"
     else
         echo "TPM already installed, skipping."
     fi
 
-    if is_installed tmux; then
-        tmux new-session -d -s temp_plugin_session
-        tmux send-keys -t temp_plugin_session "$HOME/.tmux/plugins/tpm/bin/install_plugins" C-m
-        sleep 5
-        tmux kill-session -t temp_plugin_session
-        
-        # tmux new-session -d -s temp_plugin_session ~/.tmux/plugins/tpm/bin/install_plugins
-        # # tmux new-session -d -s temp_plugin_session "~/.tmux/plugins/tpm/bin/install_plugins"
-        # sleep 5
-        # tmux kill-session -t temp_plugin_session
-    fi
+    echo "After boot, run tmux and press Prefix + I to install plugins manually."
+    
+    # if is_installed tmux; then
+    #     tmux new-session -d -s temp_plugin_session
+    #     tmux send-keys -t temp_plugin_session "$HOME/.tmux/plugins/tpm/bin/install_plugins" C-m
+    #     sleep 5
+    #     tmux kill-session -t temp_plugin_session
+    #
+    #     # tmux new-session -d -s temp_plugin_session ~/.tmux/plugins/tpm/bin/install_plugins
+    #     # # tmux new-session -d -s temp_plugin_session "~/.tmux/plugins/tpm/bin/install_plugins"
+    #     # sleep 5
+    #     # tmux kill-session -t temp_plugin_session
+    # fi
 }
 
 install_quarto_from_git() {

@@ -13,6 +13,8 @@ return {
           "dockerfile",
           "sql",
           "rust",
+          "cpp",
+          "c",
           "html",
           "julia",
           "vim",

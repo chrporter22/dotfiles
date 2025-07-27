@@ -288,6 +288,18 @@ vim /etc/locale.conf
     ```
     sudo pacman -S go
     ```
+* clang
+    ```
+    pacman -S clang
+    ```
+* make
+    ```
+    pacman -S make
+    ```
+* cmake
+    ```
+    pacman -S make
+    ```
 * nodejs & npm
     ```
     sudo pacman -S nodejs npm

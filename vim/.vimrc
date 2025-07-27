@@ -53,7 +53,7 @@ set termguicolors
 
 " colorscheme atom-dark-256
 " colorscheme zenburn
-" colorscheme catppuccin_mocha
+colorscheme catppuccin_mocha
 
 
 " Color name (:help cterm-colors) or ANSI code

@@ -122,9 +122,9 @@ start_installation() {
     echo -e "Setting up Rust stable toolchain..."
     rustup default stable
 
-    echo -e "Verifying Node.js and npm versions..."
-    node -v
-    npm -v
+    # echo -e "Verifying Node.js and npm versions..."
+    # node -v
+    # npm -v
 }
 
 install_uv() {

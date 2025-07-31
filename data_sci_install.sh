@@ -112,15 +112,35 @@ start_installation() {
     fi
 
     echo -e "Checking and installing required packages..."
+    
     install_package \
-        base-devel git neovim tmux zathura zathura-pdf-poppler \
-        ttf-jetbrains-mono-nerd ttf-font-awesome stow curl wget \
-        vim htop clang cmake make fastfetch ripgrep fzf \
-        r docker openssh nmap redis github-cli go rustup nodejs npm \
-        texlive-core texlive-bin texlive-latex texlive-latexextra texlive-formatsextra
+    base-devel git curl wget stow \
+    htop fastfetch ripgrep fzf tmux
+
+    echo -e "Checking and installing required packages checkpoint 1..."
+    install_package \
+    clang cmake make go rustup nodejs npm \
+    r docker openssh github-cli redis
+
+    echo -e "Checking and installing required packages checkpoint 2..."
+    install_package \
+    vim neovim zathura zathura-pdf-poppler \
+    ttf-jetbrains-mono-nerd ttf-font-awesome
+
+    echo -e "Checking and installing required packages checkpoint 3..."
+    install_package \
+    nmap texlive-core texlive-bin texlive-latex \
+    texlive-latexextra 
+    
+    # install_package \
+    #     base-devel git neovim tmux zathura zathura-pdf-poppler \
+    #     ttf-jetbrains-mono-nerd ttf-font-awesome stow curl wget \
+    #     vim htop clang cmake make fastfetch ripgrep fzf \
+    #     r docker openssh nmap redis github-cli go rustup nodejs npm \
+    #     texlive-core texlive-bin texlive-latex texlive-latexextra texlive-formatsextra
 
     echo -e "Setting up Rust stable toolchain..."
-    # rustup default stable
+    rustup default stable
 
     # echo -e "Verifying Node.js and npm versions..."
     # node -v

@@ -120,7 +120,7 @@ start_installation() {
         texlive-core texlive-bin texlive-latex texlive-latexextra texlive-formatsextra
 
     echo -e "Setting up Rust stable toolchain..."
-    rustup default stable
+    # rustup default stable
 
     # echo -e "Verifying Node.js and npm versions..."
     # node -v

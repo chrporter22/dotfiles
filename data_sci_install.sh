@@ -79,7 +79,7 @@ install_package() {
 # Call main function to run entire setup script
 main() {
     detect_architecture
-    install_yay
+    # install_yay
     start_installation
     install_uv
     install_zathura_pywal     # install transparency-patched zathura frontend

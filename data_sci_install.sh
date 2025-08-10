@@ -132,13 +132,6 @@ start_installation() {
     nmap texlive-core texlive-bin texlive-latex \
     texlive-latexextra 
     
-    # install_package \
-    #     base-devel git neovim tmux zathura zathura-pdf-poppler \
-    #     ttf-jetbrains-mono-nerd ttf-font-awesome stow curl wget \
-    #     vim htop clang cmake make fastfetch ripgrep fzf \
-    #     r docker openssh nmap redis github-cli go rustup nodejs npm \
-    #     texlive-core texlive-bin texlive-latex texlive-latexextra texlive-formatsextra
-
     echo -e "Setting up Rust stable toolchain..."
     rustup default stable
 
@@ -201,17 +194,6 @@ install_plugins() {
 
     echo "After boot, run tmux and press Prefix + I to install plugins manually."
     
-    # if is_installed tmux; then
-    #     tmux new-session -d -s temp_plugin_session
-    #     tmux send-keys -t temp_plugin_session "$HOME/.tmux/plugins/tpm/bin/install_plugins" C-m
-    #     sleep 5
-    #     tmux kill-session -t temp_plugin_session
-    #
-    #     # tmux new-session -d -s temp_plugin_session ~/.tmux/plugins/tpm/bin/install_plugins
-    #     # # tmux new-session -d -s temp_plugin_session "~/.tmux/plugins/tpm/bin/install_plugins"
-    #     # sleep 5
-    #     # tmux kill-session -t temp_plugin_session
-    # fi
 }
 
 install_quarto_from_git() {

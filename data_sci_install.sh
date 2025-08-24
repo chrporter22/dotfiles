@@ -120,7 +120,7 @@ start_installation() {
     echo -e "Checking and installing required packages checkpoint 1..."
     install_package \
     clang cmake make go rustup nodejs npm \
-    r docker openssh github-cli redis
+    r python python-pip docker openssh github-cli redis
 
     echo -e "Checking and installing required packages checkpoint 2..."
     install_package \

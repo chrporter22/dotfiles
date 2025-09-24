@@ -25,13 +25,11 @@ return {
         cmp_nvim_lsp.default_capabilities()
       )
 
-      local lspconfig = require("lspconfig")
-
-      lspconfig.lua_ls.setup({
+      vim.lsp.config('lua_ls', {
         capabilities = capabilities
       })
 
-      lspconfig.pyright.setup({
+      vim.lsp.config('pyright', {
         capabilities = capabilities,
         cmd = { "pyright-langserver", "--stdio" },
         filetypes = { "python"},
@@ -45,8 +43,8 @@ return {
             }
         }
       })
-    
-      lspconfig.rust_analyzer.setup({
+
+      vim.lsp.config('rust_analyzer', {
 				on_attach = on_attach,
 				capabilities = capabilities,
 				filetypes = { "rust" },
@@ -59,7 +57,7 @@ return {
 				},
 			})
 
-       lspconfig.bashls.setup({
+       vim.lsp.config('bashls', {
             capabilities = capabilities,
             cmd = { "bash-language-server", "start" },
             filetypes = { "bash", "sh" },
@@ -70,13 +68,13 @@ return {
             },
        })
 
-       lspconfig.r_language_server.setup({
+       vim.lsp.config('r_language_server', {
              cmd = { "R", "--no-echo", "-e", "languageserver::run()" },
              filetypes = { "r", "rmd", "quarto" },
              log_level = 2
        })
 
-       lspconfig.texlab.setup({
+       vim.lsp.config('texlab', {
             settings = {
                 texlab = {
                     build = {
@@ -96,7 +94,7 @@ return {
             }
         })
 
-        lspconfig.lua_ls.setup({
+        vim.lsp.config('lua_ls', {
             settings = {
                 Lua = {
                     runtime = { version = "LuaJIT" },
@@ -111,7 +109,7 @@ return {
                 },
             },
         })
-        
+
       vim.keymap.set("n", "K", vim.lsp.buf.hover, {})
       vim.keymap.set("n", "<leader>gd", vim.lsp.buf.definition, {})
       vim.keymap.set("n", "<leader>gr", vim.lsp.buf.references, {})

@@ -17,3 +17,6 @@ export PATH="$HOME/.cargo/bin:$PATH"
 
 # Add quarto path
 # export PATH="$HOME/.local/bin:$PATH"
+
+# opencode
+export PATH=/home/cporter/.opencode/bin:$PATH

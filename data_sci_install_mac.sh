@@ -1,25 +1,34 @@
 #!/usr/bin/env zsh
 
 # =============================================
-# DATA SCIENCE INSTALLER — macOS (M6 Mac Mini)
+# MACOS INSTALLER — M6 Mac Mini Studio
 # ---------------------------------------------
-# Merges CLI setup for a new M6 Mac Mini Studio.
-# Uses Homebrew, Alacritty, Skim (no Zathura).
-# Skim is configured with translucent PDF view.
-# Installs stow, Docker Desktop, and full toolchain.
+# Single macOS installer: system tooling + data science.
+# Homebrew formulas and casks, GNU Stow dotfiles,
+# uv-managed Python virtualenv for the data stack.
+# Terminal: Alacritty. PDF viewer: Skim (translucent).
+# Container runtime: Docker Desktop.
 # =============================================
 
 DRY_RUN=false
 SKIPPED_LOG="$HOME/install_skipped_packages.log"
 ERROR_LOG="$HOME/install_errors.log"
 SKIM_BUNDLE_ID="net.sourceforge.skim-app.skim"
+VENV_DIR="$HOME/.venvs/data-science"
 
-if [[ $1 == "--dry-run" ]]; then
-    DRY_RUN=true
-    echo "Dry run mode enabled. No changes will be made."
-    > "$SKIPPED_LOG"
-    > "$ERROR_LOG"
-fi
+case "$1" in
+    --dry-run)
+        DRY_RUN=true
+        echo "Dry run mode enabled. No changes will be made."
+        > "$SKIPPED_LOG"
+        > "$ERROR_LOG"
+        ;;
+    -h|--help)
+        echo "Usage: $0 [--dry-run]"
+        echo "  --dry-run  Print planned actions without changing the machine"
+        exit 0
+        ;;
+esac
 
 is_installed() {
     command -v "$1" >/dev/null 2>&1
@@ -33,31 +42,47 @@ run_or_print() {
     fi
 }
 
+find_brew() {
+    if [[ -x /opt/homebrew/bin/brew ]]; then
+        echo "/opt/homebrew/bin/brew"
+    elif [[ -x /usr/local/bin/brew ]]; then
+        echo "/usr/local/bin/brew"
+    elif is_installed brew; then
+        command -v brew
+    fi
+}
+
 install_brew() {
-    if ! is_installed brew; then
-        echo "Installing Homebrew..."
-        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" 2>>"$ERROR_LOG"
+    local brew_bin
+    brew_bin="$(find_brew)"
+
+    if [[ -z "$brew_bin" ]]; then
+        if $DRY_RUN; then
+            echo "Would install Homebrew..."
+        else
+            echo "Installing Homebrew..."
+            /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" 2>>"$ERROR_LOG"
+            brew_bin="$(find_brew)"
+        fi
     else
-        echo "Homebrew already installed, skipping."
+        echo "Homebrew already installed at $brew_bin, skipping."
         echo "brew" >> "$SKIPPED_LOG"
     fi
 
-    if [[ -f /opt/homebrew/bin/brew ]]; then
-        eval "$(/opt/homebrew/bin/brew shellenv)"
-    elif [[ -f /usr/local/bin/brew ]]; then
-        eval "$(/usr/local/bin/brew shellenv)"
+    if [[ -n "$brew_bin" ]]; then
+        eval "$("$brew_bin" shellenv)"
     fi
 }
 
 install_package() {
     local pkgs_to_install=()
     for pkg in "$@"; do
-        if ! brew list "$pkg" &>/dev/null; then
-            echo "Queuing formula $pkg..."
-            pkgs_to_install+=("$pkg")
-        else
+        if brew list "$pkg" &>/dev/null; then
             echo "$pkg already installed, skipping."
             echo "$pkg" >> "$SKIPPED_LOG"
+        else
+            echo "Queuing formula $pkg..."
+            pkgs_to_install+=("$pkg")
         fi
     done
 
@@ -73,12 +98,12 @@ install_package() {
 install_cask() {
     local casks_to_install=()
     for cask in "$@"; do
-        if ! brew list --cask "$cask" &>/dev/null; then
-            echo "Queuing cask $cask..."
-            casks_to_install+=("$cask")
-        else
+        if brew list --cask "$cask" &>/dev/null; then
             echo "$cask already installed, skipping."
             echo "$cask" >> "$SKIPPED_LOG"
+        else
+            echo "Queuing cask $cask..."
+            casks_to_install+=("$cask")
         fi
     done
 
@@ -94,13 +119,13 @@ install_cask() {
 setup_skim_transparency() {
     echo "Configuring Skim for translucent PDF view..."
 
-    if ! brew list --cask skim &>/dev/null; then
-        echo "Skim not installed yet — skipping transparency config."
+    if $DRY_RUN; then
+        echo "Would write Skim defaults: SKPaperMode = 1 (Translucent)"
         return
     fi
 
-    if $DRY_RUN; then
-        echo "Would write Skim defaults: SKPaperMode = 1 (Translucent)"
+    if ! brew list --cask skim &>/dev/null; then
+        echo "Skim not installed yet — skipping transparency config."
         return
     fi
 
@@ -116,32 +141,48 @@ setup_skim_transparency() {
 }
 
 install_xcode_tools() {
-    if ! xcode-select -p &>/dev/null; then
-        echo "Installing Xcode Command Line Tools..."
-        run_or_print xcode-select --install
-    else
+    if xcode-select -p &>/dev/null; then
         echo "Xcode Command Line Tools already installed, skipping."
         echo "xcode-select" >> "$SKIPPED_LOG"
+        return
     fi
+
+    if $DRY_RUN; then
+        echo "Would run: xcode-select --install"
+        return
+    fi
+
+    echo "Installing Xcode Command Line Tools..."
+    xcode-select --install 2>>"$ERROR_LOG" || true
+
+    echo "Waiting for the Command Line Tools install to finish..."
+    local waited=0
+    while ! xcode-select -p &>/dev/null; do
+        if (( waited >= 300 )); then
+            echo "Timed out waiting for Command Line Tools — continuing." >&2
+            echo "Timed out waiting for Xcode Command Line Tools" >> "$ERROR_LOG"
+            break
+        fi
+        sleep 10
+        (( waited += 10 ))
+    done
 }
 
 install_core() {
     echo "Installing core CLI tools..."
     install_package \
-        git curl wget stow \
+        git wget stow \
         htop fastfetch ripgrep fzf tmux \
-        tree jq xz zip unzip \
-        openssh gh
+        tree jq gh
 }
 
 install_languages() {
     echo "Installing language toolchains..."
     install_package \
-        clang cmake make go rustup nodejs npm \
-        python python-setuptools python-virtualenv pipx \
-        r
+        cmake make go rustup nodejs npm \
+        python r \
+        pipx uv
 
-    echo "Setting up Rust toolchain..."
     if is_installed rustup; then
         run_or_print rustup default stable
     fi
@@ -151,7 +192,6 @@ install_terminal() {
     echo "Installing terminal and fonts..."
     install_cask alacritty
     install_cask font-jetbrains-mono-nerd font-font-awesome font-fira-code-nerd
-    install_package starship
 }
 
 install_pdf_viewers() {
@@ -165,9 +205,6 @@ install_apps() {
     install_cask \
         docker \
         firefox \
-        rectangle \
-        hammerspoon \
-        alfred \
         visual-studio-code
 }
 
@@ -175,21 +212,41 @@ install_data_science() {
     echo "Installing data science libraries and databases..."
     install_package \
         gsl openblas hdf5 netcdf \
-        sqlite postgresql mysql redis \
+        postgresql mysql redis \
         nmap
 
-    echo "Setting up Python data science stack..."
-    if ! is_installed pip3; then
-        python3 -m ensurepip --upgrade 2>>"$ERROR_LOG"
+    setup_python_venv
+}
+
+setup_python_venv() {
+    echo "Setting up Python data science stack in $VENV_DIR..."
+
+    if [[ ! -d "$VENV_DIR" ]]; then
+        if $DRY_RUN; then
+            echo "Would create virtual environment: $VENV_DIR"
+        else
+            uv venv "$VENV_DIR" 2>>"$ERROR_LOG"
+        fi
+    else
+        echo "Virtual environment already exists, skipping creation."
+        echo "venv:data-science" >> "$SKIPPED_LOG"
     fi
-    python3 -m pip install --upgrade pip 2>>"$ERROR_LOG"
 
     if $DRY_RUN; then
-        echo "Would install Python packages: numpy pandas scipy matplotlib seaborn scikit-learn jupyterlab"
-    else
-        python3 -m pip install --user \
-            numpy pandas scipy matplotlib seaborn scikit-learn jupyterlab 2>>"$ERROR_LOG"
+        echo "Would install Python packages into $VENV_DIR: numpy pandas scipy matplotlib seaborn scikit-learn jupyterlab"
+        return
     fi
+
+    local python_bin="$VENV_DIR/bin/python"
+
+    if [[ ! -x "$python_bin" ]]; then
+        echo "Virtual environment Python missing at $python_bin — skipping packages." >&2
+        echo "Virtual environment Python missing at $python_bin" >> "$ERROR_LOG"
+        return
+    fi
+
+    uv pip install --python "$python_bin" \
+        numpy pandas scipy matplotlib seaborn scikit-learn jupyterlab 2>>"$ERROR_LOG"
 }
 
 install_latex() {
@@ -206,23 +263,40 @@ install_dotfiles() {
     local target="$HOME/.dotfiles"
 
     if [[ ! -d "$target" ]]; then
-        git clone https://github.com/chrporter22/dotfiles.git "$target"
+        if $DRY_RUN; then
+            echo "Would clone dotfiles into $target"
+            return
+        fi
+        git clone https://github.com/chrporter22/dotfiles.git "$target" 2>>"$ERROR_LOG"
     fi
 
-    cd "$target" || exit
-    stow --target="$HOME" nvim tmux alacritty starship 2>>"$ERROR_LOG"
+    if [[ ! -d "$target" ]]; then
+        echo "Dotfiles clone failed — skipping stow." >&2
+        echo "Dotfiles clone failed" >> "$ERROR_LOG"
+        return
+    fi
+
+    (cd "$target" && stow --target="$HOME" nvim tmux alacritty) 2>>"$ERROR_LOG"
 }
 
 install_plugins() {
     local nvim_lazy_path="$HOME/.local/share/nvim/lazy/lazy.nvim"
     if [[ ! -d "$nvim_lazy_path" ]]; then
-        git clone https://github.com/folke/lazy.nvim.git "$nvim_lazy_path"
+        if $DRY_RUN; then
+            echo "Would clone lazy.nvim into $nvim_lazy_path"
+        else
+            git clone https://github.com/folke/lazy.nvim.git "$nvim_lazy_path" 2>>"$ERROR_LOG"
+        fi
     else
         echo "Lazy.nvim already installed, skipping."
     fi
 
     if [[ ! -d "$HOME/.tmux/plugins/tpm" ]]; then
-        git clone https://github.com/tmux-plugins/tpm "$HOME/.tmux/plugins/tpm"
+        if $DRY_RUN; then
+            echo "Would clone TPM into $HOME/.tmux/plugins/tpm"
+        else
+            git clone https://github.com/tmux-plugins/tpm "$HOME/.tmux/plugins/tpm" 2>>"$ERROR_LOG"
+        fi
     else
         echo "TPM already installed, skipping."
     fi
@@ -237,10 +311,26 @@ report_status() {
     uname -m
 
     echo -e "\nInstalled Brew Formulas:"
-    brew list 2>/dev/null | head -40 || echo "None"
+    if is_installed brew; then
+        brew list 2>/dev/null | head -40
+    else
+        echo "Homebrew not found."
+    fi
 
     echo -e "\nInstalled Brew Casks:"
-    brew list --cask 2>/dev/null | head -40 || echo "None"
+    if is_installed brew; then
+        brew list --cask 2>/dev/null | head -40
+    else
+        echo "Homebrew not found."
+    fi
+
+    echo -e "\nPython data science environment:"
+    if [[ -x "$VENV_DIR/bin/python" ]]; then
+        echo "$VENV_DIR"
+        "$VENV_DIR/bin/python" --version 2>/dev/null
+    else
+        echo "Not created ($VENV_DIR)."
+    fi
 
     echo -e "\nInstalled Dotfiles:"
     ls "$HOME/.dotfiles" 2>/dev/null || echo "Dotfiles directory missing."
@@ -249,7 +339,11 @@ report_status() {
     defaults read "$SKIM_BUNDLE_ID" 2>/dev/null | grep -E "(SKPaper|SKBackground)" || echo "Not yet set."
 
     echo -e "\nPackages Skipped:"
-    sort "$SKIPPED_LOG" 2>/dev/null | uniq || echo "None"
+    if [[ -s "$SKIPPED_LOG" ]]; then
+        sort "$SKIPPED_LOG" | uniq
+    else
+        echo "None"
+    fi
 
     echo -e "\nErrors (if any):"
     if [[ -s "$ERROR_LOG" ]]; then
@@ -277,7 +371,8 @@ main() {
     echo -e "\n===== NEXT STEPS ====="
     echo "1. Open Skim once so the defaults take effect, then reopen PDFs."
     echo "2. Launch Docker Desktop from Applications to finish setup."
-    echo "3. Open tmux and press Prefix + I to install tmux plugins."
+    echo "3. Activate the data science environment: source $VENV_DIR/bin/activate"
+    echo "4. Open tmux and press Prefix + I to install tmux plugins."
 }
 
 main

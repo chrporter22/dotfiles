@@ -1,3 +1,22 @@
+# macOS - Install from a Clean Machine
+* Single installer: `data_sci_install_mac.sh`
+    ```
+    zsh data_sci_install_mac.sh --dry-run   # preview only, changes nothing
+    zsh data_sci_install_mac.sh
+    ```
+* Covers: Xcode Command Line Tools, Homebrew, core CLI, language toolchains,
+  Alacritty + Nerd Fonts, Skim (translucent PDF view), Docker Desktop,
+  Firefox, VS Code, LaTeX (MacTeX), the data-science stack, PostgreSQL /
+  MySQL / Redis, dotfiles via GNU Stow, lazy.nvim and TPM.
+* Python data-science environment (uv-managed venv)
+    ```
+    source ~/.venvs/data-science/bin/activate
+    ```
+* Notes
+    + The machine's Homebrew, Docker Desktop and MacTeX installs are large; expect the first run to take a while.
+    + Docker Desktop needs one manual launch to finish its privileged-helper setup.
+    + `stow` refuses to overwrite pre-existing files; re-run with `stow --adopt` if that happens.
+
 # Arch - Install from Bootable Disk
 * Set font if needed during install
     ```

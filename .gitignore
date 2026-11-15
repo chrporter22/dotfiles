@@ -3,3 +3,19 @@ i3/.config/i3/logs/
 
 # Hide backgrounds
 backgrounds/.config/backgrounds/
+
+# Secrets & credentials (never commit)
+.env
+.env.*
+!.env.example
+!.env.sample
+*.pem
+*.key
+*.p12
+*.pfx
+*.keystore
+credentials.json
+.npmrc
+secrets/
+id_rsa
+id_rsa.pub

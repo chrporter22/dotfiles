@@ -17,6 +17,28 @@
     + Docker Desktop needs one manual launch to finish its privileged-helper setup.
     + `stow` refuses to overwrite pre-existing files; re-run with `stow --adopt` if that happens.
 
+# Arch Live ISO - Thin-Shell Bootstrap
+* Single bootstrap: `arch_live_iso_setup.sh`
+    ```
+    # boot the official Arch ISO on the SSD / thumb drive
+    iwctl station wlan0 connect <SSID> --passphrase <PSK>
+    pacman -Sy git
+    git clone https://github.com/chrporter22/dotfiles.git ~/.dotfiles
+    bash ~/.dotfiles/arch_live_iso_setup.sh
+    startx
+    ```
+* Covers: i3-gaps + i3status, polybar, rofi, dmenu, picom, feh, Alacritty,
+  tmux, neovim/vim, Docker, Nerd Fonts, and the audio + bluetooth + network
+  tray stack. OpenSSH is installed; SSH into the Mac Mini is set up by
+  hand after install (the script's NEXT STEPS prints the exact commands).
+* Designed for the HP 8 GB laptop acting as a thin shell that SSHes
+  into the M6 Mac Mini — no data-science stack is installed locally.
+* Live ISO is non-persistent: re-run the script after every boot. It
+  is idempotent (skips installed packages, logs to
+  `~/install_skipped_packages.log` and `~/install_errors.log`).
+* `bash arch_live_iso_setup.sh --dry-run` previews everything without
+  touching the machine.
+
 # Arch - Install from Bootable Disk
 * Set font if needed during install
     ```
